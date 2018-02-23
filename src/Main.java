@@ -1,3 +1,4 @@
+import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -23,9 +24,21 @@ public class Main {
         LocalDateTime birthDate = LocalDateTime.of(1999, 2, 7, 12, 35);
         System.out.println("The birthdate is " + birthDate);
 
+        //Output the day of the week (Sunday-Saturday) that you were born.
+        System.out.println("The day of the week of the birthdate was " + findDayOfDate(birthDate));
+
+        
+        
+    }
+
+    private static DayOfWeek findDayOfDate(LocalDateTime userDate) {
+        return userDate.getDayOfWeek();
     }
 
     private static LocalDateTime addWeeksToDate(LocalDateTime date, long numWeeks) {
         return date.plusWeeks(5);
     }
+    
+    
+    
 }
