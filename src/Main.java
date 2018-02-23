@@ -1,6 +1,7 @@
 import java.time.DayOfWeek;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
 
 public class Main {
 
@@ -22,13 +23,18 @@ public class Main {
 
         //Initialize a LocalDateTime object to your birthdate and the time 12:35 PM.
         LocalDateTime birthDate = LocalDateTime.of(1999, 2, 7, 12, 35);
-        System.out.println("The birthdate is " + birthDate);
+        System.out.println("Your birthdate is " + birthDate);
 
         //Output the day of the week (Sunday-Saturday) that you were born.
-        System.out.println("The day of the week of the birthdate was " + findDayOfDate(birthDate));
+        System.out.println("The day of the week of your birthdate was " + findDayOfDate(birthDate));
 
+        //Output the number of days you've been alive.
+        System.out.println("The number of days you have been alive is " + daysBetweenDates(birthDate,today) + " days.");
         
-        
+    }
+
+    private static long daysBetweenDates(LocalDateTime earlyDate, LocalDateTime laterDate) {
+        return ChronoUnit.DAYS.between(earlyDate,laterDate);
     }
 
     private static DayOfWeek findDayOfDate(LocalDateTime userDate) {
