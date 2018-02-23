@@ -30,6 +30,12 @@ public class Main {
 
         //Output the number of days you've been alive.
         System.out.println("The number of days you have been alive is " + daysBetweenDates(birthDate,today) + " days.");
+
+        //Output the number of days between two dates.
+        LocalDateTime obamaInauguration = LocalDateTime.of(2009,2,20, 12,0);
+        System.out.println("The number of days between your birthdate and Obama's inauguration is " + daysBetweenDates(birthDate,obamaInauguration) + " days.");
+
+        
         
     }
 
