@@ -19,6 +19,10 @@ public class Main {
         LocalDateTime fiveWeeksLater = addWeeksToDate(today, 5);
         System.out.println("The five weeks, the date will be " + fiveWeeksLater);
 
+        //Initialize a LocalDateTime object to your birthdate and the time 12:35 PM.
+        LocalDateTime birthDate = LocalDateTime.of(1999, 2, 7, 12, 35);
+        System.out.println("The birthdate is " + birthDate);
+
     }
 
     private static LocalDateTime addWeeksToDate(LocalDateTime date, long numWeeks) {
