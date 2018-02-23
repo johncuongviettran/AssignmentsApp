@@ -1,4 +1,5 @@
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 public class Main {
 
@@ -7,8 +8,12 @@ public class Main {
 
         //Output the current date-time.
         LocalDateTime today = LocalDateTime.now();
-        System.out.println("\nThe current date-time is: " + today);
-        
+        System.out.println("\nThe current date-time is " + today);
+
+        //Output tomorrow's date using a formatter.
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yy-MM-dd HH:mm:ss");
+        String formatDateTime = today.format(formatter);
+        System.out.println("Tomorrow's formatted date is " + formatDateTime);
 
     }
 }
