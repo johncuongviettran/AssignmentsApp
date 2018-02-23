@@ -15,5 +15,13 @@ public class Main {
         String formatDateTime = today.format(formatter);
         System.out.println("Tomorrow's formatted date is " + formatDateTime);
 
+        //Add 5 weeks to today's LocalDateTime.
+        LocalDateTime fiveWeeksLater = addWeeksToDate(today, 5);
+        System.out.println("The five weeks, the date will be " + fiveWeeksLater);
+
+    }
+
+    private static LocalDateTime addWeeksToDate(LocalDateTime date, long numWeeks) {
+        return date.plusWeeks(5);
     }
 }
