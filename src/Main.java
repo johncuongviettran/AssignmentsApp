@@ -43,11 +43,9 @@ public class Main {
 
         //Create a file with 100 random "month/day/year  hour:minutes" (in that format) on each line.
         ArrayList<String> hundredRandomDates = randomDateArray(100);
-        for (String dates : hundredRandomDates) {
-            System.out.println(dates);
-        }
-
+        for (int i = 0; i < hundredRandomDates.size(); i++) System.out.println("Date " + (i + 1) + " is " + hundredRandomDates.get(i));
     }
+
     private static ArrayList<String> randomDateArray (int NumElements){
         ArrayList<String> returnArray = new ArrayList<>();
         for (int i = 0; i < NumElements; i++) {
