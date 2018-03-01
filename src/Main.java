@@ -39,7 +39,7 @@ public class Main {
         System.out.println("The number of days between your birthdate and Obama's inauguration is " + ChronoUnit.DAYS.between(birthDate, obamaInauguration) + " days.");
 
         //Given two dates, output the earlier.
-        FindEarlierDate(today, obamaInauguration);
+        System.out.println("The earlier date is " + FindEarlierDate(today, obamaInauguration));
 
         //Create a file with 100 random "month/day/year  hour:minutes" (in that format) on each line.
         ArrayList<String> hundredRandomDates = randomDateArray(100);
@@ -83,13 +83,13 @@ public class Main {
         return rand.nextInt(bound);
     }
 
-    private static void FindEarlierDate(LocalDateTime date1, LocalDateTime date2) {
-        if (date1 == date2) {
-            System.out.println("\nThe dates are the same.");
-        } else if (date1.isBefore(date2)) {
-            System.out.println("The earlier date is " + date1);
-        } else {
-            System.out.println("The earlier date is " + date2);
+    private static LocalDateTime FindEarlierDate(LocalDateTime date1, LocalDateTime date2) {
+        LocalDateTime earlyDate = date1;
+        if (date2.isBefore(date1)) {
+            earlyDate = date2;
+        } else if (date1 == date2) {
+            System.out.println("Both dates are the same.");
         }
+        return earlyDate;
     }
 }
