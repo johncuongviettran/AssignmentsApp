@@ -3,6 +3,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
 import java.util.Random;
 
 public class Main {
@@ -40,10 +41,49 @@ public class Main {
         //Given two dates, output the earlier.
         FindEarlierDate(today, obamaInauguration);
 
-        
+        //Create a file with 100 random "month/day/year  hour:minutes" (in that format) on each line.
+        ArrayList<String> hundredRandomDates = randomDateArray(100);
+        for (String dates : hundredRandomDates) {
+            System.out.println(dates);
+        }
 
     }
+    private static ArrayList<String> randomDateArray (int NumElements){
+        ArrayList<String> returnArray = new ArrayList<>();
+        for (int i = 0; i < NumElements; i++) {
+            returnArray.add(randomDateGenerator());
+        }
+        return returnArray;
+    }
 
+    private static String randomDateGenerator (){
+        LocalDateTime today =  LocalDateTime.now();
+        ArrayList<Integer> monthsWith30days = new ArrayList<>();
+        monthsWith30days.add(4);
+        monthsWith30days.add(6);
+        monthsWith30days.add(9);
+        monthsWith30days.add(11);
+        int day;
+        int year = randomNumGenerator(today.getYear());
+        int month = randomNumGenerator(12) + 1;
+        if (month == 2 && year /4 == 0){
+            day = randomNumGenerator(29) + 1;
+        } else if (month == 2 && year/4 != 0){
+            day = randomNumGenerator(28) + 1;
+        } else if (monthsWith30days.contains(month)){
+            day = randomNumGenerator(30) + 1;
+        } else {
+            day = randomNumGenerator(31) + 1;
+        }
+        LocalDateTime generatedDate = LocalDateTime.of(year, month, day,randomNumGenerator(24), randomNumGenerator(60));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
+        return generatedDate.format(formatter);
+    }
+
+    private static int randomNumGenerator (int bound) {
+        Random rand = new Random();
+        return rand.nextInt(bound);
+    }
 
     private static void FindEarlierDate(LocalDateTime date1, LocalDateTime date2) {
         if (date1 == date2) {
