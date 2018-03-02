@@ -8,6 +8,8 @@ import java.util.Random;
 
 public class Main {
 
+    static Random rand = new Random();
+
     public static void main(String[] args) {
         System.out.println("\n\nHello, AssignmentsApp!\n");
 
@@ -42,53 +44,29 @@ public class Main {
         System.out.println("The earlier date is " + FindEarlierDate(today, obamaInauguration));
 
         //Create a file with 100 random "month/day/year  hour:minutes" (in that format) on each line.
-        ArrayList<String> hundredRandomDates = randomDateArray(100);
+        ArrayList<LocalDateTime> hundredRandomDates = randomDateArray(100);
         for (int i = 0; i < hundredRandomDates.size(); i++) System.out.println("Date " + (i + 1) + " is " + hundredRandomDates.get(i));
     }
 
-    private static ArrayList<String> randomDateArray (int NumElements){
-        ArrayList<String> returnArray = new ArrayList<>();
+
+    private static ArrayList<LocalDateTime> randomDateArray (int NumElements){
+        ArrayList<LocalDateTime> returnArray = new ArrayList<>();
         for (int i = 0; i < NumElements; i++) {
             returnArray.add(randomDateGenerator());
         }
         return returnArray;
     }
 
-    private static String randomDateGenerator (){
-        LocalDateTime today =  LocalDateTime.now();
-        ArrayList<Integer> monthsWith30days = new ArrayList<>();
-        monthsWith30days.add(4);
-        monthsWith30days.add(6);
-        monthsWith30days.add(9);
-        monthsWith30days.add(11);
-        int day;
-        int year = randomNumGenerator(today.getYear());
-        int month = randomNumGenerator(12) + 1;
-        if (month == 2 && year /4 == 0){
-            day = randomNumGenerator(29) + 1;
-        } else if (month == 2 && year/4 != 0){
-            day = randomNumGenerator(28) + 1;
-        } else if (monthsWith30days.contains(month)){
-            day = randomNumGenerator(30) + 1;
-        } else {
-            day = randomNumGenerator(31) + 1;
-        }
-        LocalDateTime generatedDate = LocalDateTime.of(year, month, day,randomNumGenerator(24), randomNumGenerator(60));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM-dd-yyyy HH:mm");
-        return generatedDate.format(formatter);
-    }
-
-    private static int randomNumGenerator (int bound) {
-        Random rand = new Random();
-        return rand.nextInt(bound);
+    private static LocalDateTime randomDateGenerator (){
+        long startOfTime = ChronoUnit.MINUTES.between(LocalDateTime.of(0,1,1,0,0),LocalDateTime.now());
+        long minutes = rand.nextInt((int) startOfTime);
+        return LocalDateTime.now().minusMinutes(minutes);
     }
 
     private static LocalDateTime FindEarlierDate(LocalDateTime date1, LocalDateTime date2) {
         LocalDateTime earlyDate = date1;
         if (date2.isBefore(date1)) {
             earlyDate = date2;
-        } else if (date1 == date2) {
-            System.out.println("Both dates are the same.");
         }
         return earlyDate;
     }
