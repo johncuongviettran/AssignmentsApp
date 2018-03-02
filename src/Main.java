@@ -50,11 +50,13 @@ public class Main {
         for (int i = 0; i < hundredRandomDates.size(); i++) System.out.println("Date " + (i + 1) + " is " + hundredRandomDates.get(i));
 
         //Output the number of stored dates in the year [Y].
-        System.out.print("What is the year you want to find the dates of?");
+        System.out.print("\nWhat is the year you want to find the dates of?");
         ArrayList<LocalDateTime> datesOfUserYear = searchByYear(hundredRandomDates, sc.nextInt());
         System.out.println("The number of dates with that year is " + datesOfUserYear.size());
 
-        //TODO Count the number of stored dates in the current year.
+        //Count the number of stored dates in the current year.
+        ArrayList<LocalDateTime> datesOfCurrentYear = searchByYear(hundredRandomDates, today.getYear());
+        System.out.println("\nThe number of dates in the current year is " + datesOfCurrentYear.size());
     }
 
     private static ArrayList<LocalDateTime> searchByYear(ArrayList<LocalDateTime> listOfLocalDateTimes, int year) {
