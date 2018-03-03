@@ -6,6 +6,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Main {
 
@@ -47,10 +48,10 @@ public class Main {
 
         //Create a file with 100 random "month/day/year  hour:minutes" (in that format) on each line.
         ArrayList<LocalDateTime> hundredRandomDates = randomDateArray(100);
-        for (int i = 0; i < hundredRandomDates.size(); i++) System.out.println("Date " + (i + 1) + " is " + hundredRandomDates.get(i));
+        hundredRandomDates.forEach(d -> System.out.println("Date is " + d));
 
         //Output the number of stored dates in the year [Y].
-        System.out.print("\nWhat is the year you want to find the dates of?");
+        System.out.print("\nWhat is the year you want to find the dates of? ");
         ArrayList<LocalDateTime> datesOfUserYear = searchByYear(hundredRandomDates, sc.nextInt());
         System.out.println("The number of dates with that year is " + datesOfUserYear.size());
 
@@ -60,15 +61,12 @@ public class Main {
     }
 
     private static ArrayList<LocalDateTime> searchByYear(ArrayList<LocalDateTime> listOfLocalDateTimes, int year) {
-        ArrayList<LocalDateTime> returnArray = new ArrayList<>();
-        for (LocalDateTime date : listOfLocalDateTimes) {
-            if (date.getYear() == year) {
-                returnArray.add(date);
-            }
-        }
+        ArrayList<LocalDateTime> returnArray =
+                (ArrayList) listOfLocalDateTimes.stream()
+                        .filter( date -> date.getYear()==year)
+                        .collect(Collectors.toList());
         return returnArray;
     }
-
 
     private static ArrayList<LocalDateTime> randomDateArray (int NumElements){
         ArrayList<LocalDateTime> returnArray = new ArrayList<>();
