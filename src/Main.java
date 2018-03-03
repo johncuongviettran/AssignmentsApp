@@ -61,7 +61,11 @@ public class Main {
         ArrayList<LocalDateTime> duplicatedDates = seekDuplicates(hundredRandomDates);
         System.out.println("\nThere are " + duplicatedDates.size() + " duplicated dates.");
 
-        //TODO Sort the dates in chronological order.
+        // Sort the dates in chronological order.
+        Collections.sort(hundredRandomDates);
+        System.out.println("\nThe sorted dates are as followed: ");
+        hundredRandomDates.forEach(d -> System.out.println(d));
+
     }
     private static ArrayList<LocalDateTime> seekDuplicates(ArrayList<LocalDateTime> userList) {
         ArrayList<LocalDateTime> returnArray = new ArrayList<>();
