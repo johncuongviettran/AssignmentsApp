@@ -3,9 +3,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Main {
@@ -58,6 +56,21 @@ public class Main {
         //Count the number of stored dates in the current year.
         ArrayList<LocalDateTime> datesOfCurrentYear = searchByYear(hundredRandomDates, today.getYear());
         System.out.println("\nThe number of dates in the current year is " + datesOfCurrentYear.size());
+
+        //Count the number of duplicates.
+        ArrayList<LocalDateTime> duplicatedDates = seekDuplicates(hundredRandomDates);
+        System.out.println("\nThere are " + duplicatedDates.size() + " duplicated dates.");
+
+        //TODO Sort the dates in chronological order.
+    }
+    private static ArrayList<LocalDateTime> seekDuplicates(ArrayList<LocalDateTime> userList) {
+        ArrayList<LocalDateTime> returnArray = new ArrayList<>();
+        Set<LocalDateTime> dateSet = new HashSet<>();
+        for (LocalDateTime date : userList) {
+            if (dateSet.contains(date)) returnArray.add(date);
+            dateSet.add(date);
+        }
+        return returnArray;
     }
 
     private static ArrayList<LocalDateTime> searchByYear(ArrayList<LocalDateTime> listOfLocalDateTimes, int year) {
