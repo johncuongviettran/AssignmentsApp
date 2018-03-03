@@ -66,7 +66,19 @@ public class Main {
         System.out.println("\nThe sorted dates are as followed: ");
         hundredRandomDates.forEach(d -> System.out.println(d));
 
+        //Count the number of duplicates in a sorted list without using a Java Set.
+        System.out.println("\nWithout using a Set, the number of duplicated dates are " + countDuplicates(hundredRandomDates));
     }
+
+    private static int countDuplicates(ArrayList<LocalDateTime> hundredRandomDates) {
+        int count = 0;
+        for (LocalDateTime date: hundredRandomDates) {
+            if (Collections.frequency(hundredRandomDates, date) >= 2) count++;
+        }
+        return count;
+    }
+
+
     private static ArrayList<LocalDateTime> seekDuplicates(ArrayList<LocalDateTime> userList) {
         ArrayList<LocalDateTime> returnArray = new ArrayList<>();
         Set<LocalDateTime> dateSet = new HashSet<>();
