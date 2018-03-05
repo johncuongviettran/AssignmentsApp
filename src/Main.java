@@ -1,5 +1,3 @@
-import java.time.DayOfWeek;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
@@ -68,6 +66,17 @@ public class Main {
 
         //Count the number of duplicates in a sorted list without using a Java Set.
         System.out.println("\nWithout using a Set, the number of duplicated dates are " + countDuplicates(hundredRandomDates));
+
+        //Count the number of evening (after 6pm) dates.
+        ArrayList<LocalDateTime> eveningDates = searchDatesInTimeframe(hundredRandomDates,18, 24 );
+        System.out.println("\nThe number of evening dates are " + eveningDates.size());
+
+
+    }
+    private static ArrayList searchDatesInTimeframe (ArrayList<LocalDateTime> dateList, int startHour, int endHour){
+        return (ArrayList) dateList.stream()
+                .filter( date -> date.getHour() >= startHour && date.getHour() < endHour)
+                .collect(Collectors.toList());
     }
 
     private static int countDuplicates(ArrayList<LocalDateTime> hundredRandomDates) {
@@ -90,11 +99,9 @@ public class Main {
     }
 
     private static ArrayList<LocalDateTime> searchByYear(ArrayList<LocalDateTime> listOfLocalDateTimes, int year) {
-        ArrayList<LocalDateTime> returnArray =
-                (ArrayList) listOfLocalDateTimes.stream()
-                        .filter( date -> date.getYear()==year)
-                        .collect(Collectors.toList());
-        return returnArray;
+        return (ArrayList) listOfLocalDateTimes.stream()
+                .filter( date -> date.getYear()==year)
+                .collect(Collectors.toList());
     }
 
     private static ArrayList<LocalDateTime> randomDateArray (int NumElements){
