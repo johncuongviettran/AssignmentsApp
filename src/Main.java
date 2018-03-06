@@ -71,8 +71,24 @@ public class Main {
         ArrayList<LocalDateTime> eveningDates = searchDatesInTimeframe(hundredRandomDates,18, 24 );
         System.out.println("\nThe number of evening dates are " + eveningDates.size());
 
+        //Count the number of dates in each of the individual 12 months without using a Java Map.
+        System.out.println("\nWhat is the number of the month you are searching the dates for?");
+        int month = sc.nextInt();
+        if (month > 12 || month < 1) System.out.println("That month value is not valid.");
+        else {
+            ArrayList<LocalDateTime> datesOfMonth = searchByMonth(hundredRandomDates, month);
+            System.out.println("The number of dates in month " + month + " is " + datesOfMonth.size());
+        }
 
+        //TODO Count the number of dates in each of the individual 12 months using a Java Map.
     }
+
+    private static ArrayList<LocalDateTime> searchByMonth(ArrayList<LocalDateTime> dateList, int month) {
+        return (ArrayList) dateList.stream()
+                .filter( date -> date.getMonthValue() == month)
+                .collect(Collectors.toList());
+    }
+
     private static ArrayList searchDatesInTimeframe (ArrayList<LocalDateTime> dateList, int startHour, int endHour){
         return (ArrayList) dateList.stream()
                 .filter( date -> date.getHour() >= startHour && date.getHour() < endHour)
