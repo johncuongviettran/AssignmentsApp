@@ -80,7 +80,23 @@ public class Main {
             System.out.println("The number of dates in month " + month + " is " + datesOfMonth.size());
         }
 
-        //TODO Count the number of dates in each of the individual 12 months using a Java Map.
+        //Count the number of dates in each of the individual 12 months using a Java Map.
+        if (month >= 1 && month <=12){
+            System.out.println("Using a Java Map, the number of dates in month " + month + " is " + searchByMonthMap(hundredRandomDates,month));
+        }
+    }
+
+    private static Integer searchByMonthMap (ArrayList<LocalDateTime> dateList, int month){
+        return mapByMonth(dateList).get(month);
+    }
+
+    private static Map<Integer, Integer> mapByMonth(ArrayList<LocalDateTime> dateList) {
+        Map<Integer,Integer> returnMap = new HashMap<>();
+        for (LocalDateTime date : dateList) {
+            Integer count = returnMap.get(date.getMonthValue());
+            returnMap.put(date.getMonthValue(), (count == null) ? 1 : count + 1);
+        }
+        return returnMap;
     }
 
     private static ArrayList<LocalDateTime> searchByMonth(ArrayList<LocalDateTime> dateList, int month) {
