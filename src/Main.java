@@ -84,6 +84,14 @@ public class Main {
         if (month >= 1 && month <=12){
             System.out.println("Using a Java Map, the number of dates in month " + month + " is " + searchByMonthMap(hundredRandomDates,month));
         }
+
+        //Determine the index of the latest LocalDateTime.
+        System.out.println("\nThe index of the latest LocalDateTime is " + indexLatestDate(hundredRandomDates));
+    }
+
+    private static Integer indexLatestDate(ArrayList<LocalDateTime> dateList) {
+        //I don't know if this counts as a wrapper but if it does, then I'll just use the code directly.
+        return dateList.indexOf(Collections.max(dateList));
     }
 
     private static Integer searchByMonthMap (ArrayList<LocalDateTime> dateList, int month){
