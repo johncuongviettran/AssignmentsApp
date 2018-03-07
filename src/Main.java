@@ -92,6 +92,29 @@ public class Main {
 
         //Determine the indexes of the elements that have the earliest starting time, regardless of date.
         System.out.println("\nThe index of the date with the earliest starting time is " + indexEarliestTime(hundredRandomDates));
+
+        //Output a date in the format "January 1st, 2018".
+        System.out.print("\nWhat is the index of the date you want to be outputted in the format \"January 1st, 2018\"? ");
+        System.out.println("The formatted date is " + formattedDate(hundredRandomDates.get(sc.nextInt())));
+        //I had completely forgotten to submit the previous story, so if it looks like I completed this story incredibly quickly, it's because I temporarily removed this code so I could post the for the previous story.
+    }
+
+    private static String formattedDate(LocalDateTime date) {
+        String newDate = "";
+        newDate += date.format(DateTimeFormatter.ofPattern("MMMM "));
+        newDate += intToOrdinal(date.getDayOfMonth());
+        newDate += date.format(DateTimeFormatter.ofPattern(", yyyy"));
+        return newDate;
+    }
+
+    private static String intToOrdinal(int num){
+        String[] suffixes = new String[] {"th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th" };
+        //I probably should have made this into a switch/case.
+        if (num % 100 == 11 || num % 100 == 12 || num % 100 == 13) {
+            return num + "th";
+        } else {
+            return num + suffixes[num % 10];
+        }
     }
 
     private static Integer indexEarliestTime(ArrayList<LocalDateTime> dateList){
