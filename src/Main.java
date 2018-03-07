@@ -1,4 +1,6 @@
+import javax.swing.text.DateFormatter;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoUnit;
 import java.util.*;
@@ -72,7 +74,7 @@ public class Main {
         System.out.println("\nThe number of evening dates are " + eveningDates.size());
 
         //Count the number of dates in each of the individual 12 months without using a Java Map.
-        System.out.println("\nWhat is the number of the month you are searching the dates for?");
+        System.out.print("\nWhat is the number of the month you are searching the dates for? ");
         int month = sc.nextInt();
         if (month > 12 || month < 1) System.out.println("That month value is not valid.");
         else {
@@ -82,19 +84,29 @@ public class Main {
 
         //Count the number of dates in each of the individual 12 months using a Java Map.
         if (month >= 1 && month <=12){
-            System.out.println("Using a Java Map, the number of dates in month " + month + " is " + searchByMonthMap(hundredRandomDates,month));
+            System.out.println("Using a Java Map, the number of dates in month " + month + " is " + mapByMonthSearch(hundredRandomDates,month));
         }
 
         //Determine the index of the latest LocalDateTime.
         System.out.println("\nThe index of the latest LocalDateTime is " + indexLatestDate(hundredRandomDates));
+
+        //Determine the indexes of the elements that have the earliest starting time, regardless of date.
+        System.out.println("\nThe index of the date with the earliest starting time is " + indexEarliestTime(hundredRandomDates));
+    }
+
+    private static Integer indexEarliestTime(ArrayList<LocalDateTime> dateList){
+        LocalDateTime earliestDateTime = dateList.get(0);
+        for (LocalDateTime date: dateList) {
+            if (earliestDateTime.toLocalTime().isAfter(date.toLocalTime())) earliestDateTime = date;
+        }
+        return dateList.indexOf(earliestDateTime);
     }
 
     private static Integer indexLatestDate(ArrayList<LocalDateTime> dateList) {
-        //I don't know if this counts as a wrapper but if it does, then I'll just use the code directly.
         return dateList.indexOf(Collections.max(dateList));
     }
 
-    private static Integer searchByMonthMap (ArrayList<LocalDateTime> dateList, int month){
+    private static Integer mapByMonthSearch (ArrayList<LocalDateTime> dateList, int month){
         return mapByMonth(dateList).get(month);
     }
 
