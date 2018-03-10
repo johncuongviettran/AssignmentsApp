@@ -144,11 +144,43 @@ public class Main {
         //Determines the indices of the dates with the earliest starting time.
         ArrayList<Integer> indicesEarliestLocalTime = new ArrayList<>();
         indicesEarliestLocalTime = findIndices(dateTimeList, findEarliestLocalTime(dateTimeList));
-        System.out.println("The indices of the elements with the earlist starting time are " + indicesEarliestLocalTime);
+        System.out.println("The indices of the elements with the earliest starting time are " + indicesEarliestLocalTime);
 
         //Outputs a date in the format "January 1st, 2018".
         String suffix = getOrdinalSuffix(today.getDayOfMonth());
         System.out.println("Today's date in the format of \"January 1st, 2018\" is " + today.getMonth().getDisplayName(TextStyle.FULL, Locale.getDefault()) + " " + today.getDayOfMonth() + suffix + ", " + today.getYear());
+
+        //Tests the Day enumerated type.
+        EnumTest enumTestDay = new EnumTest(Day.randomDay());
+        enumTestDay.stateDay();
+
+        //Tests the Course enumerated type.
+        EnumTest enumTestCourse = new EnumTest(Course.randomCourse());
+        enumTestCourse.stateCourse();
+
+        //Tests the Category enumerated type.
+        EnumTest enumTestCategory = new EnumTest(Category.randomCategory());
+        enumTestCategory.stateCategory();
+
+        //Generates 2 random Assignment objects named assign1 and assign2.
+        Assignment assign1 = randomAssignment(0,3,today.getYear(),today.getYear(),
+                today.getMonthValue(),today.getMonthValue(),today.getHour(),today.getHour(),
+                today.getMinute(),today.getMinute());
+        Assignment assign2 = randomAssignment(0,3,today.getYear(),today.getYear(),
+                today.getMonthValue(),today.getMonthValue(),today.getHour(),today.getHour(),
+                today.getMinute(),today.getMinute());
+        System.out.println("assign1 is " + assign1.toString());
+        System.out.println("assign2 is " + assign2.toString());
+
+        //Copies assign1 to assign3.
+        Assignment assign3 = new Assignment(assign1);
+        System.out.println("assign3 is " + assign3.toString());
+
+        //Checks if assign3 is equal to assign1.
+        if (assign3.equals(assign1)){
+            System.out.println("assign1 is equal to assign3");
+        }
+
     }
     //Function to generate a random integer within a range with both bounds being inclusive.
     private static int randomPositiveIntInInclusiveRange(int lowerBound, int upperBound){
@@ -307,5 +339,15 @@ public class Main {
             suffix = "th";
         }
         return suffix;
+    }
+    //Function to generate a random Assignment object within the specifications stated.
+    private static Assignment randomAssignment(int priorityLowerBound, int priorityUpperBound, int yearUpperBound,
+                                               int yearLowerBound, int monthValueUpperBound, int monthValueLowerBound,
+                                               int hourUpperBound, int hourLowerBound, int minuteUpperBound, int minuteLowerBound){
+        Assignment tempAssignment = new Assignment(randLocalDateTime(yearUpperBound, yearLowerBound,
+                monthValueUpperBound, monthValueLowerBound, hourUpperBound,hourLowerBound,minuteUpperBound,
+                minuteLowerBound), Category.randomCategory(), Course.randomCourse(),
+                randomPositiveIntInInclusiveRange(priorityLowerBound, priorityUpperBound));
+        return tempAssignment;
     }
 }
