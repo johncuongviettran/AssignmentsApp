@@ -164,11 +164,11 @@ public class Main {
 
         //Generates 2 random Assignment objects named assign1 and assign2.
         Assignment assign1 = randomAssignment(0,3,today.getYear(),today.getYear(),
-                today.getMonthValue(),today.getMonthValue(),today.getHour(),today.getHour(),
-                today.getMinute(),today.getMinute());
+                today.getMonthValue(),today.getMonthValue(),23,0,
+                59,0);
         Assignment assign2 = randomAssignment(0,3,today.getYear(),today.getYear(),
-                today.getMonthValue(),today.getMonthValue(),today.getHour(),today.getHour(),
-                today.getMinute(),today.getMinute());
+                today.getMonthValue(),today.getMonthValue(),23,0,
+                59,0);
         System.out.println("assign1 is " + assign1.toString());
         System.out.println("assign2 is " + assign2.toString());
 
@@ -180,6 +180,29 @@ public class Main {
         if (assign3.equals(assign1)){
             System.out.println("assign1 is equal to assign3");
         }
+        //Outputs BEFORE, EQUALS, or AFTER depending on the result of the comparison.
+        int compareAssign1Assign2 = assign1.compareTo(assign2);
+        System.out.println("assign1 " + compare(compareAssign1Assign2) + " assign2.");
+
+        //Outputs the earliest assignment.
+        switch (compareAssign1Assign2){
+            case -1:
+                System.out.println("assign1 and assign 3 are equal and are the earliest assignments between assign1, assign2, assign3.");
+                break;
+            case 0:
+                System.out.println("assign1, assign2, and assign3 are equal to each other");
+                break;
+            case 1:
+                System.out.println("assign2 is the earliest assignment between assign1, assign2, assign3.");
+                break;
+        }
+        //Generates a file named input.dat with the inputted number of random assignments on each line in the format, "LocalDateTime Course Category Priority.
+        System.out.println("Enter the number of desired assignments");
+        int numAssignments = sc.nextInt();
+        generateFileWithXAssignments(numAssignments, "input.dat", 0, 3,
+                today.getYear(), today.getYear(), today.getMonthValue(), today.getMonthValue(), 23,
+                0, 59, 0  );
+        
 
     }
     //Function to generate a random integer within a range with both bounds being inclusive.
@@ -349,5 +372,30 @@ public class Main {
                 minuteLowerBound), Category.randomCategory(), Course.randomCourse(),
                 randomPositiveIntInInclusiveRange(priorityLowerBound, priorityUpperBound));
         return tempAssignment;
+    }
+    //Function to return a string with the value "AFTER", "BEFORE", or "EQUALS" depending on the integer inputted.
+    private static String compare(int integer){
+        String temp = "";
+        switch (integer){
+            case -1: temp = "BEFORE";
+            break;
+            case 0: temp = "EQUALS";
+            break;
+            case 1: temp = "AFTER";
+            break;
+        }
+        return temp;
+    }
+    //Function to generate a file with a specified name and type with the specified number of random assignments written on each line in the formate, "LocalDateTime Course Category Priority".
+    private static void generateFileWithXAssignments (int numOfAssignments, String file, int priorityLowerBound, int priorityUpperBound,
+                                                      int yearUpperBound, int yearLowerBound, int monthValueUpperBound, int monthValueLowerBound,
+                                                      int hourUpperBound, int hourLowerBound, int minuteUpperBound, int minuteLowerBound) throws FileNotFoundException {
+        File tempFile = new File(file);
+        try (PrintWriter pw = new PrintWriter(tempFile)){
+            for (int i = 0; i < numOfAssignments; i++) {
+                Assignment tempAssignment = randomAssignment(priorityLowerBound, priorityUpperBound, yearUpperBound, yearLowerBound, monthValueUpperBound, monthValueLowerBound, hourUpperBound, hourLowerBound, minuteUpperBound, minuteLowerBound);
+                pw.println(tempAssignment.toStringDateTimeCourseCategoryPriority());
+            }
+        }
     }
 }

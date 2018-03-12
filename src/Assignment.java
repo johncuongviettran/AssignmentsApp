@@ -1,6 +1,6 @@
 import java.time.LocalDateTime;
 
-public class Assignment {
+public class Assignment implements Comparable<Assignment>{
     private LocalDateTime dateTime;
     private Category category;
     private Course course;
@@ -65,5 +65,23 @@ public class Assignment {
         else {
             return false;
         }
+    }
+
+    @Override
+    public int compareTo(Assignment comparedAssignment) {
+        Integer returnInt = null;
+        if (this.dateTime.isBefore(comparedAssignment.dateTime)){
+            returnInt = -1;
+        }
+        else if (this.dateTime.equals(comparedAssignment.dateTime)){
+            returnInt = 0;
+        }
+        else if (this.dateTime.isAfter(comparedAssignment.dateTime)){
+            returnInt = 1;
+        }
+        return returnInt;
+    }
+    public String toStringDateTimeCourseCategoryPriority (){
+        return this.dateTime + " " + this.course + " " + this.getCategory() + " " + this.priority;
     }
 }
