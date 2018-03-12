@@ -82,6 +82,6 @@ public class Assignment implements Comparable<Assignment>{
         return returnInt;
     }
     public String toStringDateTimeCourseCategoryPriority (){
-        return this.dateTime + " " + this.course + " " + this.getCategory() + " " + this.priority;
+        return this.dateTime + " " + this.course + " " + this.category + " " + this.priority;
     }
 }

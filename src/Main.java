@@ -9,14 +9,13 @@ import java.time.temporal.TemporalField;
 import java.util.*;
 
 import static java.time.temporal.ChronoUnit.DAYS;
-import static java.time.temporal.ChronoUnit.MONTHS;
 import static java.time.temporal.ChronoUnit.WEEKS;
 
 public class Main {
 
     private static Random rand = new Random();
     private static Scanner sc = new Scanner(System.in);
-    private static final DateTimeFormatter formatMMddyyyyhhmm = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
+    private static final DateTimeFormatter formatMMddyyyyHHmm = DateTimeFormatter.ofPattern("MM/dd/yyyy HH:mm");
     public static void main(String[] args) throws FileNotFoundException {
         System.out.println("\n\nHello, AssignmentsApp!\n");
 
@@ -61,29 +60,11 @@ public class Main {
 
         //Generates 100 random dates into a text file.
         File datesFile = new File("dates.txt");
-        try (PrintWriter pw = new PrintWriter(datesFile)){
-            for (int i = 0; i < 100; i++) {
-                LocalDateTime tempDateTime = randLocalDateTime(today.getYear(), today.getYear() - 3, 12, 1, 23, 0, 59, 0);
-                pw.println(tempDateTime.format(formatMMddyyyyhhmm));
-            }
-        }
+        writeIntoFileWithXLocalDateTimeMMddyyyyHHmm(datesFile, 100, today.getYear(), today.getYear() - 3, 12, 1, 23, 0, 59, 0);
+
         //Adds dates from text file to an ArrayList as an ArrayList of LocalDateTime objects:
         ArrayList<LocalDateTime> dateTimeList = new ArrayList<>();
-        try (Scanner scFile = new Scanner(datesFile)){
-            while( scFile.hasNext() ) {
-                String date = scFile.next();
-                String[] dateArray = date.split("/");
-                Integer monthValue = Integer.valueOf(dateArray[0]);
-                Integer dayOfMonthValue = Integer.valueOf(dateArray[1]);
-                Integer yearValue = Integer.valueOf(dateArray[2]);
-                String time = scFile.next();
-                String[] timeArray = time.split(":");
-                Integer hourValue = Integer.valueOf(timeArray[0]);
-                Integer minuteValue = Integer.valueOf(timeArray[1]);
-                LocalDateTime tempDateTime = LocalDateTime.of(yearValue, monthValue, dayOfMonthValue, hourValue, minuteValue);
-                dateTimeList.add(tempDateTime);
-            }
-        }
+        dateTimeList = readAndStoreFileWithMMddyyyyHHmmDatesAndTimes(datesFile);
         System.out.println("The elements of the ArrayList of the 100 generated dates as LocalDateTime Objects are " + dateTimeList);
 
         //Finds the number of stored dates with a specified year.
@@ -199,11 +180,15 @@ public class Main {
         //Generates a file named input.dat with the inputted number of random assignments on each line in the format, "LocalDateTime Course Category Priority.
         System.out.println("Enter the number of desired assignments");
         int numAssignments = sc.nextInt();
-        generateFileWithXAssignments(numAssignments, "input.dat", 0, 3,
+        File assignmentsFile = new File("input.dat");
+        writeIntoFileWithXAssignments(numAssignments, assignmentsFile, 0, 3,
                 today.getYear(), today.getYear(), today.getMonthValue(), today.getMonthValue(), 23,
                 0, 59, 0  );
-        
 
+        //Reads the input.dat file and stores the each line as an Assignment in an Assignment Arraylist.
+        ArrayList<Assignment> assignmentList = new ArrayList<>();
+        assignmentList = readAndStoreFileWithAssignmentValues(assignmentsFile);
+        System.out.println("The elements of the ArrayList with the Assignment objects from the input.dat file are " + assignmentList);
     }
     //Function to generate a random integer within a range with both bounds being inclusive.
     private static int randomPositiveIntInInclusiveRange(int lowerBound, int upperBound){
@@ -215,7 +200,9 @@ public class Main {
         }
     }
     //Function to generate a random LocalDateTime object from bounds for the year, month value, hour, and minute.
-    private static LocalDateTime randLocalDateTime (int yearUpperBound, int yearLowerBound, int monthValueUpperBound, int monthValueLowerBound, int hourUpperBound, int hourLowerBound, int minuteUpperBound, int minuteLowerBound){
+    private static LocalDateTime randLocalDateTime (int yearUpperBound, int yearLowerBound, int monthValueUpperBound,
+                                                    int monthValueLowerBound, int hourUpperBound, int hourLowerBound,
+                                                    int minuteUpperBound, int minuteLowerBound){
         int yearValue = randomPositiveIntInInclusiveRange(yearLowerBound, yearUpperBound);
         int monthValue = randomPositiveIntInInclusiveRange(monthValueLowerBound, monthValueUpperBound);
         int dayOfMonthValue = Month.of(monthValue).minLength();
@@ -240,6 +227,39 @@ public class Main {
             tempDateTime = date1;
         }
         return tempDateTime;
+    }
+    //Function to write into a file the specified number of random LocalDateTime objects written on each line in the format, "Month/Day/Year Hour:Minute".
+    private static void writeIntoFileWithXLocalDateTimeMMddyyyyHHmm(File file, int numLocalDateTimeObjects, int yearUpperBound,
+                                                                    int yearLowerBound, int monthValueUpperBound, int monthValueLowerBound,
+                                                                    int hourUpperBound, int hourLowerBound, int minuteUpperBound, int minuteLowerBound) throws FileNotFoundException {
+        try (PrintWriter pw = new PrintWriter(file)){
+            for (int i = 0; i < numLocalDateTimeObjects; i++) {
+                LocalDateTime tempDateTime = randLocalDateTime(yearUpperBound, yearLowerBound,
+                        monthValueUpperBound, monthValueLowerBound, hourUpperBound,hourLowerBound,minuteUpperBound,
+                        minuteLowerBound);
+                pw.println(tempDateTime.format(formatMMddyyyyHHmm));
+            }
+        }
+    }
+    //Function to read a file with lines of code depicting dates and times in the format, "Month/Day/Year Hour:Minute," and store those dates and times as an ArrayList of LocalDateTime objects.
+    private static ArrayList<LocalDateTime> readAndStoreFileWithMMddyyyyHHmmDatesAndTimes(File file) throws FileNotFoundException {
+        ArrayList<LocalDateTime> tempList = new ArrayList<>();
+        try (Scanner scFile = new Scanner(file)){
+            while( scFile.hasNext() ) {
+                String date = scFile.next();
+                String[] dateArray = date.split("/");
+                Integer monthValue = Integer.valueOf(dateArray[0]);
+                Integer dayOfMonthValue = Integer.valueOf(dateArray[1]);
+                Integer yearValue = Integer.valueOf(dateArray[2]);
+                String time = scFile.next();
+                String[] timeArray = time.split(":");
+                Integer hourValue = Integer.valueOf(timeArray[0]);
+                Integer minuteValue = Integer.valueOf(timeArray[1]);
+                LocalDateTime tempDateTime = LocalDateTime.of(yearValue, monthValue, dayOfMonthValue, hourValue, minuteValue);
+                tempList.add(tempDateTime);
+            }
+        }
+        return tempList;
     }
     //Function to find the elements in a LocalDateTime Arraylist that have a specific value for a specific temporal field.
     private static ArrayList<LocalDateTime> findTemporalFieldValue (ArrayList<LocalDateTime> list, int target, TemporalField temporalField){
@@ -386,16 +406,39 @@ public class Main {
         }
         return temp;
     }
-    //Function to generate a file with a specified name and type with the specified number of random assignments written on each line in the formate, "LocalDateTime Course Category Priority".
-    private static void generateFileWithXAssignments (int numOfAssignments, String file, int priorityLowerBound, int priorityUpperBound,
+    //Function to write into a file the specified number of random assignments written on each line in the format, "LocalDateTime Course Category Priority".
+    private static void writeIntoFileWithXAssignments(int numOfAssignments, File file, int priorityLowerBound, int priorityUpperBound,
                                                       int yearUpperBound, int yearLowerBound, int monthValueUpperBound, int monthValueLowerBound,
                                                       int hourUpperBound, int hourLowerBound, int minuteUpperBound, int minuteLowerBound) throws FileNotFoundException {
-        File tempFile = new File(file);
-        try (PrintWriter pw = new PrintWriter(tempFile)){
+        try (PrintWriter pw = new PrintWriter(file)){
             for (int i = 0; i < numOfAssignments; i++) {
                 Assignment tempAssignment = randomAssignment(priorityLowerBound, priorityUpperBound, yearUpperBound, yearLowerBound, monthValueUpperBound, monthValueLowerBound, hourUpperBound, hourLowerBound, minuteUpperBound, minuteLowerBound);
                 pw.println(tempAssignment.toStringDateTimeCourseCategoryPriority());
             }
         }
+    }
+    //Function to read a file with lines of code depicting LocalDateTime values, Course values, Category values, and Priority values in the format, "LocalDateTime Course Category Priority," and store those items as an ArrayList of Assignment objects.
+    private static ArrayList<Assignment> readAndStoreFileWithAssignmentValues (File file) throws FileNotFoundException {
+        ArrayList<Assignment> tempList = new ArrayList<>();
+        try (Scanner scFile = new Scanner(file)){
+            while( scFile.hasNext() ) {
+                String dateTime = scFile.next();
+                String[] tempArray1 = dateTime.split("-");
+                String[] tempArray2 = tempArray1[2].split("T");
+                String[] tempArray3 = tempArray2[1].split(":");
+                Integer yearValue = Integer.valueOf(tempArray1[0]);
+                Integer monthValue = Integer.valueOf(tempArray1[1]);
+                Integer dayOfMonthValue = Integer.valueOf(tempArray2[0]);
+                Integer hourValue = Integer.valueOf(tempArray3[0]);
+                Integer minuteValue = Integer.valueOf(tempArray3[1]);
+                LocalDateTime tempDateTime = LocalDateTime.of(yearValue, monthValue, dayOfMonthValue, hourValue, minuteValue);
+                Course course = Course.valueOf(scFile.next());
+                Category category = Category.valueOf(scFile.next());
+                int priority = Integer.valueOf(scFile.next());
+                Assignment tempAssignment = new Assignment(tempDateTime, category, course, priority);
+                tempList.add(tempAssignment);
+            }
+        }
+        return tempList;
     }
 }
